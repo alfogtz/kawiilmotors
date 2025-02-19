@@ -10,7 +10,7 @@ class LoanApplication(models.Model):
     date_approval = fields.Date(string="Approval Date")
     date_rejection = fields.Date(string="Rejection Date")
     date_signed = fields.Datetime(string="Signed On")
-    down_payment = fields.Monetary(string="Loan Amount", currency_field='currency_id')
+    down_payment = fields.Monetary(string="Down Payment", currency_field='currency_id')
     interest_rate = fields.Float(string="Interest Rate (%)", digits=(5, 4))
     loan_amount = fields.Monetary(string="Loan Amount", currency_field='currency_id')
     loan_term = fields.Integer(string="Loan Term (Months)", required=True, default=36)
