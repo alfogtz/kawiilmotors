@@ -1,5 +1,5 @@
 <odoo>
-    <menuitem id="root_menu_motorcycle_financing" name="Motorcycle Financing">
+    <menuitem id="root_menu_motorcycle_financing" name="Financing">
         <menuitem id="menu_motorcycle_financing" name="Motorcycle Financing">
             <menuitem id="menu_loan_applications" name="Loan Applications" action="action_loan_application"/>
         </menuitem>
