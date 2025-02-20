@@ -12,4 +12,5 @@
              'views/motorcycle_financing_menu.xml',],
     'demo': ['data/loan_demo.xml',],
     'application': True,
+    'images': ['static/description/icon.png'],
 }
