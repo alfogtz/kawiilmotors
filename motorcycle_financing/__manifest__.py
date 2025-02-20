@@ -7,7 +7,7 @@
     'author': 'alfogtz',
     'website': 'https://github.com/alfogtz/kawiilmotors',
     'version': '18.0.0.0.1',
-    'depends': [],
+    'depends': ['base'],
     'data': ['views/motorcycle_financing_menu.xml',
              'views/loan_application_views.xml',],
     'demo': ['data/loan_demo.xml',],
