@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem id="menu_motorcycle_financing" name="Motorcycle Financing" sequence="10"/>
+        <menuitem id="menu_loan_application" name="Loan Applications"
+            parent="menu_motorcycle_financing"
+            sequence="20"/>
+</odoo>
