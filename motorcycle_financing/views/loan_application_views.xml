@@ -1,0 +1,7 @@
+<odoo>
+    <record id="action_loan_application" model="ir.actions.act_window">
+        <field name="name">Loan Applications</field>
+        <field name="res_model">loan.application</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
