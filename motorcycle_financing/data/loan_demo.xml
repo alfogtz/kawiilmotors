@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="loan_01" model="loan.application">
+        <field name="name">Pedro Ramirez - Ukko 2024</field>
+        <field name="interest_rate">5.60</field>
+        <field name="loan_amount">15000</field>
+        <field name="loan_term">32</field>
+        <field name="state">draft</field>
+        <field name="date_application">2023-01-27</field>
+    </record>
+
+    <record id="loan_02" model="loan.application">
+        <field name="name">Antoine Bourdain - Indra 2024</field>
+        <field name="interest_rate">9.00</field>
+        <field name="loan_amount">9000</field>
+        <field name="loan_term">24</field>
+        <field name="state">signed</field>
+        <field name="date_application" eval="(DateTime.today() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
+    </record>
+
+    <record id="loan_03" model="loan.application">
+        <field name="name">Friedrich Keller - Raijin 2024</field>
+        <field name="interest_rate">5.48</field>
+        <field name="loan_amount">25000</field>
+        <field name="loan_term">64</field>
+        <field name="state">approved</field>
+        <field name="date_application" eval="(DateTime.today() - relativedelta(months=2)).strftime('%Y-%m-%d')"/>
+    </record>
+</odoo>
