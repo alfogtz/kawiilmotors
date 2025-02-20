@@ -8,8 +8,8 @@
     'website': 'https://github.com/alfogtz/kawiilmotors',
     'version': '18.0.0.0.1',
     'depends': ['base'],
-    'data': ['views/motorcycle_financing_menu.xml',
-             'views/loan_application_views.xml',],
+    'data': ['views/loan_application_views.xml',
+             'views/motorcycle_financing_menu.xml',],
     'demo': ['data/loan_demo.xml',],
     'application': True,
 }
