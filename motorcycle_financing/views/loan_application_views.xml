@@ -3,7 +3,7 @@
         <field name="name">loan.application.view.tree</field>
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="currency_id"/>
                 <field name="date_application"/>
@@ -15,7 +15,7 @@
                 <field name="loan_amount"/>
                 <field name="loan_term"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
