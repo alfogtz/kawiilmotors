@@ -1,6 +1,29 @@
 <odoo>
+    <record id="financing_menu_tree_view" model="ir.ui.view">
+        <field name="List of Loans">loan.application.view.tree</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="currency_id"/>
+                <field name="date_application"/>
+                <field name="date_approval"/>
+                <field name="date_rejection"/>
+                <field name="date_signed"/>
+                <field name="down_payment"/>
+                <field name="interest_rate"/>
+                <field name="loan_amount"/>
+                <field name="loan_term"/>
+                <field name="rejection_reason"/>
+                <field name="state"/>
+                <field name="notes"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="action_loan_application" model="ir.actions.act_window">
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>
+        <field name="view_model">tree,form</field>
     </record>
 </odoo>
