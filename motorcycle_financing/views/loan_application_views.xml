@@ -14,16 +14,60 @@
                 <field name="interest_rate"/>
                 <field name="loan_amount"/>
                 <field name="loan_term"/>
-                <field name="rejection_reason"/>
                 <field name="state"/>
-                <field name="notes"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="loan_application_form_view" model="ir.ui.view">
+        <field name="name">loan.application.view.form</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="currency_id"/>
+                            <field name="loan_amount"/>
+                            <field name="down_payment"/>
+                            <field name="interest_rate"/>
+                            <field name="loan_term"/>
+                        </group>
+                        <group>
+                            <field name="date_application"/>
+                            <field name="date_approval"/>
+                            <field name="date_rejection"/>
+                            <field name="date_signed"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="state"/>
+                        <field name="rejection_reason"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="loan_application_search_view" model="ir.ui.view">
+        <field name="name">loan.application.view.search</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="state"/>
+                <filter string="Draft" domain="[('state','=','draft')]"/>
+                <filter string="Approved" domain="[('state','=','approved')]"/>
+                <filter string="Rejected" domain="[('state','=','rejected')]"/>
+            </search>
         </field>
     </record>
 
     <record id="action_loan_application" model="ir.actions.act_window">
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>
