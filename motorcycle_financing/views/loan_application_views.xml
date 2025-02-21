@@ -1,6 +1,6 @@
 <odoo>
     <record id="financing_menu_tree_view" model="ir.ui.view">
-        <field name="List of Loans">loan.application.view.tree</field>
+        <field name="name">loan.application.view.tree</field>
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
             <tree>
@@ -24,6 +24,6 @@
     <record id="action_loan_application" model="ir.actions.act_window">
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>
-        <field name="view_model">tree,form</field>
+        <field name="view_mode">tree, form</field>
     </record>
 </odoo>
