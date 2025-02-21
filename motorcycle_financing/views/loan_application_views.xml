@@ -23,28 +23,20 @@
         <field name="name">loan.application.view.form</field>
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Loan Application">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="currency_id"/>
-                            <field name="loan_amount"/>
-                            <field name="down_payment"/>
-                            <field name="interest_rate"/>
-                            <field name="loan_term"/>
-                        </group>
-                        <group>
-                            <field name="date_application"/>
-                            <field name="date_approval"/>
-                            <field name="date_rejection"/>
-                            <field name="date_signed"/>
-                        </group>
-                    </group>
-                    <group>
+                        <field name="name"/>
+                        <field name="currency_id"/>
+                        <field name="date_application"/>
+                        <field name="date_approval"/>
+                        <field name="date_rejection"/>
+                        <field name="date_signed"/>
+                        <field name="down_payment"/>
+                        <field name="interest_rate"/>
+                        <field name="loan_amount"/>
+                        <field name="loan_term"/>
                         <field name="state"/>
-                        <field name="rejection_reason"/>
-                        <field name="notes"/>
                     </group>
                 </sheet>
             </form>
@@ -58,9 +50,9 @@
             <search>
                 <field name="name"/>
                 <field name="state"/>
-                <filter string="Draft" domain="[('state','=','draft')]"/>
-                <filter string="Approved" domain="[('state','=','approved')]"/>
-                <filter string="Rejected" domain="[('state','=','rejected')]"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="approved" string="Approved" domain="[('state','=','approved')]"/>
+                <filter name="signed" string="Signed" domain="[('state','=','signed')]"/>
             </search>
         </field>
     </record>
