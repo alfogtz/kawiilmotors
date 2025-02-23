@@ -37,9 +37,6 @@ class LoanApplication(models.Model):
     # Tags relation (Many2many)
     tag_ids = fields.Many2many(
         'loan.application.tag',
-        #'loan_application_tag_rel',
-        #'loan_id',
-        #'tag_id',
         string='Tags'
     )
 
