@@ -28,3 +28,42 @@ class LoanApplication(models.Model):
     ], string="Status", default='draft', copy=False)
     notes = fields.Html(string="Notes", copy=False)
 
+    document_ids = fields.One2many(
+        'loan.application.document',
+        #'loan_id',
+        string='Documents'
+    )
+
+    # Tags relation (Many2many)
+    tag_ids = fields.Many2many(
+        'loan.application.tag',
+        #'loan_application_tag_rel',
+        #'loan_id',
+        #'tag_id',
+        string='Tags'
+    )
+
+    # Relation with customers (Many2one)
+    partner_id = fields.Many2one(
+        'res.partner',
+        string='Customer'
+    )
+
+    # Relación con Ordenes de Venta (Many2one)
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        string='Related Sale Order'
+    )
+
+    # Relación con Vendedores (Many2one)
+    user_id = fields.Many2one(
+        'res.users',
+        string='Salesperson'
+    )
+
+    # Relación con Productos (Many2one)
+    product_template_id = fields.Many2one(
+        'product.template',
+        string='Product'
+    )
+
