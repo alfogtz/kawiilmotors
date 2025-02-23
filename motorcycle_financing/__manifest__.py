@@ -12,7 +12,7 @@
              'security/ir.model.access.csv',
              'security/document_security.xml',
              'security/rules.xml',
-             'views/loan_application_actions.xml',
+             'views/loan_application_action.xml',
              'views/loan_application_document_views.xml',
              'views/loan_application_document_type_views.xml',
              'views/loan_application_tag_views.xml',
