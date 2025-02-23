@@ -1,9 +1,11 @@
 <odoo>
     <menuitem id="root_menu_motorcycle_financing" name="Financing"
-web_icon="motorcycle_financing,static/description/icon.png">
+              web_icon="motorcycle_financing,static/description/icon.png">
         <menuitem id="menu_motorcycle_financing" name="Motorcycle Financing">
             <menuitem id="menu_loan_applications" name="Loan Applications" action="action_loan_application"/>
+            <menuitem id="menu_loan_documents" name="Loan Documents" action="action_loan_application_document"/>
+            <menuitem id="menu_loan_document_types" name="Document Types" action="action_loan_application_document_type"/>
+            <menuitem id="menu_loan_tags" name="Loan Tags" action="action_loan_application_tag"/>
         </menuitem>
     </menuitem>
 </odoo>
-

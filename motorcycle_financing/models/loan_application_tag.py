@@ -1,0 +1,7 @@
+from odoo import fields, models
+
+class LoanApplicationTag(models.Model):
+    _name = "loan.application.tag"
+    _description = "Loan application tag"
+
+    name = fields.Char(string="Tag name", required = True)

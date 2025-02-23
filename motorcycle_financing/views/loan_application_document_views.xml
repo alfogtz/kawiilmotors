@@ -1,0 +1,32 @@
+<odoo>
+    <record id="view_loan_application_document_tree" model="ir.ui.view">
+        <field name="name">loan.application.document.tree</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="application_id"/>
+                <field name="type_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_loan_application_document_form" model="ir.ui.view">
+        <field name="name">loan.application.document.form</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="application_id"/>
+                        <field name="type_id"/>
+                        <field name="attachment"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
