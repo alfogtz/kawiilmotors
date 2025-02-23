@@ -21,7 +21,8 @@
                     <group>
                         <field name="name"/>
                         <field name="document_number"/>
-                        <field name="active"/>
+                        <!--<field name="active"/>-->
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                 </sheet>
             </form>
