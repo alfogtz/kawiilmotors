@@ -30,7 +30,7 @@ class LoanApplication(models.Model):
 
     document_ids = fields.One2many(
         'loan.application.document',
-        #'loan_id',
+        'application_id',
         string='Documents'
     )
 
