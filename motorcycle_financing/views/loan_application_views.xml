@@ -25,13 +25,9 @@
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
             <form>
-                <sheet>
+                <sheet string="Loan Information">
+                    <field name="tag_ids" widget="many2many_tags" string="Tags"/>
                     <group>
-
-                        <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                        </group>
-
                         <group string="General Information">
                             <field name="name"/>
                             <field name="date_application"/>
@@ -43,7 +39,7 @@
                         </group>
 
 
-                        <group strin="Financial Information">
+                        <group string="Financial Information">
                             <field name="loan_amount"/>
                             <field name="down_payment"/>
                             <field name="interest_rate"/>
@@ -70,3 +66,4 @@
     </record>
 
 </odoo>
+
