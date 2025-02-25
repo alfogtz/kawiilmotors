@@ -27,17 +27,28 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="currency_id"/>
-                        <field name="date_application"/>
-                        <field name="date_approval"/>
-                        <field name="date_rejection"/>
-                        <field name="date_signed"/>
-                        <field name="down_payment"/>
-                        <field name="interest_rate"/>
-                        <field name="loan_amount"/>
-                        <field name="loan_term"/>
-                        <field name="state"/>
+
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
+
+                        <group string="General Information">
+                            <field name="name"/>
+                            <field name="date_application"/>
+                            <field name="date_approval"/>
+                            <field name="date_rejection"/>
+                            <field name="currency_id"/>
+                            <field name="date_signed"/>
+                            <field name="state"/>
+                        </group>
+
+
+                        <group strin="Financial Information">
+                            <field name="loan_amount"/>
+                            <field name="down_payment"/>
+                            <field name="interest_rate"/>
+                            <field name="loan_term"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
