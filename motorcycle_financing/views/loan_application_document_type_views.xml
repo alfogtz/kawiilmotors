@@ -6,8 +6,7 @@
             <list>
                 <field name="name"/>
                 <field name="document_number"/>
-                <!--<field name="active"/>-->
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="active"/>
             </list>
         </field>
     </record>
@@ -21,8 +20,7 @@
                     <group>
                         <field name="name"/>
                         <field name="document_number"/>
-                        <!--<field name="active"/>-->
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="active"/>
                     </group>
                 </sheet>
             </form>
