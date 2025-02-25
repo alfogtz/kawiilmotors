@@ -5,7 +5,7 @@ class LoanApplication(models.Model):
     _description = 'Loan Application'
 
     name = fields.Char(string="Application Number", required=True)
-    currency_id = fields.Many2one(related="sale_order_id.currency_id", readonly=True, store=True)
+    currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
     date_rejection = fields.Date(string="Rejection Date", readonly=True, copy=False)
