@@ -23,7 +23,7 @@
     <record id="loan_application_form_view" model="ir.ui.view">
         <field name="name">loan.application.view.form</field>
         <field name="model">loan.application</field>
-        < name="arch" type="xml">
+        <field name="arch" type="xml">
             <form>
                 <sheet string="Loan Information">
                     <field name="tag_ids" widget="many2many_tags" string="Tags"/>
