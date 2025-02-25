@@ -12,7 +12,7 @@
                 <field name="date_rejection"/>
                 <field name="date_signed"/>
                 <field name="down_payment"/>
-                <field name="interest_rate"/>
+                <field name="interest_rate" widget="percentage"/>
                 <field name="loan_amount"/>
                 <field name="loan_term"/>
                 <field name="state"/>
@@ -42,7 +42,7 @@
                         <group string="Financial Information">
                             <field name="loan_amount"/>
                             <field name="down_payment"/>
-                            <field name="interest_rate"/>
+                            <field name="interest_rate" widget="percentage"/>
                             <field name="loan_term"/>
                         </group>
                     </group>
