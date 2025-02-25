@@ -23,13 +23,15 @@
     <record id="loan_application_form_view" model="ir.ui.view">
         <field name="name">loan.application.view.form</field>
         <field name="model">loan.application</field>
-        <field name="arch" type="xml">
+        < name="arch" type="xml">
             <form>
                 <sheet string="Loan Information">
                     <field name="tag_ids" widget="many2many_tags" string="Tags"/>
                     <group>
-                        <group string="General Information">
+                        <group string="CUSTOMER INFO">
                             <field name="name"/>
+                            <field name="sale_order_id"/>
+                            <field name="partner_name"/>
                             <field name="date_application"/>
                             <field name="date_approval"/>
                             <field name="date_rejection"/>
@@ -39,11 +41,13 @@
                         </group>
 
 
-                        <group string="Financial Information">
+                        <group string="LOAN INFO">
                             <field name="loan_amount"/>
                             <field name="down_payment"/>
                             <field name="interest_rate" widget="percentage"/>
                             <field name="loan_term"/>
+                            <field name="document_count"/>
+                            <field name="document_count_approved"/>
                         </group>
                     </group>
                 </sheet>

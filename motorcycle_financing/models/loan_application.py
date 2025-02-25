@@ -27,13 +27,14 @@ class LoanApplication(models.Model):
     document_ids = fields.One2many('loan.application.document','application_id',string='Documents')
     tag_ids = fields.Many2many('loan.application.tag',string='Tags')
     partner_id = fields.Many2one(related="sale_order_id.partner_id", readonly=True, store=True)
+    partner_name = fields.Char(related="partner_id.name", readonly=True, store=True)
     sale_order_id = fields.Many2one('sale.order',string='Related Sale Order')
     user_id = fields.Many2one(related="sale_order_id.user_id", readonly=True, store=True)
     product_template_id = fields.Many2one('product.template', string='Product')
-    sale_order_total = fields.Float(related="sale_order_id.amount_total", readonly=True, store=True)
+    sale_order_total = fields.Monetary(related="sale_order_id.amount_total", readonly=True, store=True)
 
     @api.depends("sale_order_total", "down_payment")
-    def _loan_amount(self):
+    def _loan_amount_computation(self):
         for loan in self:
             loan.loan_amount = loan.sale_order_total - loan.down_payment
 
