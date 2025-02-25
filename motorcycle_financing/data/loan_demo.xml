@@ -2,7 +2,7 @@
 <odoo>
     <record id="loan_01" model="loan.application">
         <field name="name">Pedro Ramirez - Ukko 2024</field>
-        <field name="interest_rate">5.60</field>
+        <field name="interest_rate">0.056</field>
         <field name="loan_amount">15000</field>
         <field name="down_payment">2000</field>
         <field name="loan_term">32</field>
@@ -12,7 +12,7 @@
 
     <record id="loan_02" model="loan.application">
         <field name="name">Antoine Bourdain - Indra 2024</field>
-        <field name="interest_rate">9.00</field>
+        <field name="interest_rate">0.09</field>
         <field name="loan_amount">9000</field>
         <field name="down_payment">1500</field>
         <field name="loan_term">24</field>
@@ -22,7 +22,7 @@
 
     <record id="loan_03" model="loan.application">
         <field name="name">Friedrich Keller - Raijin 2024</field>
-        <field name="interest_rate">5.48</field>
+        <field name="interest_rate">0.0548</field>
         <field name="loan_amount">25000</field>
         <field name="down_payment">5000</field>
         <field name="loan_term">64</field>

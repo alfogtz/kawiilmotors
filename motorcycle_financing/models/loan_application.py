@@ -34,31 +34,26 @@ class LoanApplication(models.Model):
         string='Documents'
     )
 
-    # Tags relation (Many2many)
     tag_ids = fields.Many2many(
         'loan.application.tag',
         string='Tags'
     )
 
-    # Relation with customers (Many2one)
     partner_id = fields.Many2one(
         'res.partner',
         string='Customer'
     )
 
-    # Relación con Ordenes de Venta (Many2one)
     sale_order_id = fields.Many2one(
         'sale.order',
         string='Related Sale Order'
     )
 
-    # Relación con Vendedores (Many2one)
     user_id = fields.Many2one(
         'res.users',
         string='Salesperson'
     )
 
-    # Relación con Productos (Many2one)
     product_template_id = fields.Many2one(
         'product.template',
         string='Product'
