@@ -42,6 +42,7 @@
 
 
                         <group string="LOAN INFO">
+                            <field name="sale_order_total"/>
                             <field name="loan_amount"/>
                             <field name="down_payment"/>
                             <field name="interest_rate" widget="percentage"/>
