@@ -30,6 +30,14 @@
                     <header>
                         <field name="state" widget="statusbar"/>
                                <!-- statusbar_visible="draft, sent, review, approved, rejected, signed"-->
+                        <button name="action_send_for_approval" type="object" string="Send for Approval"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                        <button name="action_approve_loan" type="object" string="Approve Loan"
+                                class="btn-primary" attrs="{'invisible': [('state', '!=', 'sent')]}"/>
+
+                        <button name="action_reject_loan" type="object" string="Reject Loan"
+                                class="btn-danger" attrs="{'invisible': [('state', '!=', 'sent')]}"/>
                     </header>
 
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -71,7 +79,9 @@
                             </field>
                         </page>
                     </notebook>
-
+                    <group attrs="{'invisible': [('state', '!=', 'rejected')]}">
+                        <field name="rejection_reason"/>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -90,6 +100,5 @@
             </search>
         </field>
     </record>
-
 </odoo>
 
