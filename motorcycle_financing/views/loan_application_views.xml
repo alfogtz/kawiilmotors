@@ -11,11 +11,12 @@
                 <field name="date_approval"/>
                 <field name="date_rejection"/>
                 <field name="date_signed"/>
-                <field name="down_payment"/>
+                <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="interest_rate" widget="percentage"/>
-                <field name="loan_amount"/>
+                <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="loan_term"/>
-                <field name="state"/>
+                <field name="state" widget="badge"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </list>
         </field>
     </record>
@@ -27,8 +28,8 @@
             <form>
                 <sheet string="Loan Information">
                     <header>
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="draft, sent, review, approved, rejected, signed"
+                        <field name="state" widget="statusbar"/>
+                               <!-- statusbar_visible="draft, sent, review, approved, rejected, signed"-->
                     </header>
 
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -57,6 +58,20 @@
                             <field name="document_count_approved"/>
                         </group>
                     </group>
+
+                    <notebook>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="type_id"/>
+                                    <field name="attachment" widget="binary"/>
+                                    <field name="state" widget="badge"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
                 </sheet>
             </form>
         </field>

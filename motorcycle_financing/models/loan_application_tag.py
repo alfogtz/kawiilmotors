@@ -5,5 +5,5 @@ class LoanApplicationTag(models.Model):
     _description = "Loan application tag"
 
     name = fields.Char(string="Tag name", required = True)
-
+    color = fields.Integer(string="Color")
 
