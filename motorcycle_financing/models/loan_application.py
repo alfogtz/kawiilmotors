@@ -35,6 +35,11 @@ class LoanApplication(models.Model):
     product_template_id = fields.Many2one('product.template', string='Product')
     sale_order_total = fields.Monetary(related="sale_order_id.amount_total", readonly=True, store=True)
 
+    _sql_constraints = [
+        ('check_down_payment', 'CHECK(down_payment >= 0)', 'Down payment cannot be negative.'),
+        ('check_loan_amount', 'CHECK(loan_amount >= 0)', 'Loan amount cannot be negative.')
+    ]
+
     @api.depends("sale_order_total", "down_payment")
     def _loan_amount_computation(self):
         for loan in self:
@@ -43,6 +48,14 @@ class LoanApplication(models.Model):
     loan_amount = fields.Monetary(string="Loan Amount", compute="_loan_amount_computation",
                                   store=True, currency_field='currency_id'
                                   )
+
+    @api.constrains('down_payment', 'sale_order_total')
+    def _check_down_payment(self):
+        for record in self:
+            if record.down_payment > record.sale_order_total:
+                raise exceptions.ValidationError(
+                    "Down payment cannot exceed the sales order total."
+                )
 
     @api.depends("document_ids")
     def _compute_document_count(self):
@@ -59,23 +72,25 @@ class LoanApplication(models.Model):
     document_count_approved = fields.Integer(string="Approved Documents", compute="_compute_document_count_approved",
                                              store=True)
 
-    #Sends app for approval but checking if documents are attached
+    # Sends app for approval but checking if documents are attached
     def action_send_for_approval(self):
         for loan in self:
             if not loan.document_ids:
                 raise exceptions.ValidationError(
-                    "It seems that some documents are missing, you can not send to approval without documents attached.")
+                    "It seems that some documents are missing, you can not send to approval without documents attached."
+                )
 
             if any(doc.state != 'approved' for doc in loan.document_ids):
                 raise exceptions.ValidationError(
-                    "All documents must be in 'Approved' state before sending the loan for approval.")
+                    "All documents must be in 'Approved' state before sending the loan for approval."
+                )
 
             loan.write({
                 'state': 'sent',
                 'date_sent': date.today()
             })
 
-    #loan approval
+    # Loan approval
     def action_approve_loan(self):
         self.write({
             'state': 'approved',
@@ -83,12 +98,20 @@ class LoanApplication(models.Model):
         })
 
     #Loan rejection
-    def action_reject_loan(self, rejection_reason=False):
-        if not rejection_reason:
-            raise exceptions.ValidationError("Please provide a reason for rejection.")
+    # def action_reject_loan(self, rejection_reason=False):
+    #     if not rejection_reason:
+    #         raise exceptions.ValidationError("Please provide a reason for rejection.")
+    #
+    #     self.write({
+    #         'state': 'rejected',
+    #         'date_rejection': date.today(),
+    #         'rejection_reason': rejection_reason
+    #     })
 
+    # Loan rejection without requiring a reason
+    def action_reject_loan(self):
+        """ Change the loan application state to 'rejected' without requiring a reason """
         self.write({
             'state': 'rejected',
-            'date_rejection': date.today(),
-            'rejection_reason': rejection_reason
+            'date_rejection': date.today()
         })
