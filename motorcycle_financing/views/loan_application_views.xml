@@ -41,7 +41,8 @@
 
                         <group invisible="state not in ('sent')">
                             <button name="action_reject_loan" type="object" string="Reject Loan"
-                                    class="btn-danger"/>
+                                    class="btn-danger"
+                                    confirm="Are you sure you want to reject this loan?"/>
                         </group>
                     </header>
 
@@ -80,6 +81,14 @@
                                     <field name="type_id"/>
                                     <field name="attachment" widget="binary"/>
                                     <field name="state" widget="badge"/>
+                                    <button name="action_approve_document" type="object"
+                                        class="oe_secondary"
+                                        icon="fa-check"
+                                        invisible="state != 'new'"/>
+                                    <button name="action_reject_document" type="object"
+                                        class="oe_secondary"
+                                        icon="fa-times"
+                                        invisible="state != 'new'"/>
                                 </list>
                             </field>
                         </page>

@@ -1,4 +1,5 @@
 from odoo import models, fields, api, exceptions
+from datetime import date
 
 class LoanApplication(models.Model):
     _name = 'loan.application'
@@ -82,7 +83,7 @@ class LoanApplication(models.Model):
         })
 
     #Loan rejection
-    def action_reject_loan(self, rejection_reason):
+    def action_reject_loan(self, rejection_reason=False):
         if not rejection_reason:
             raise exceptions.ValidationError("Please provide a reason for rejection.")
 
