@@ -11,13 +11,13 @@
 
                 <!-- Approve Button -->
                 <button name="action_approve_document" type="object"
-                    string="✔️" class="oe_highlight"
+                    class="oe_secondary"
                     icon="fa-check"
                     invisible="state != 'new'"/>
 
                 <!-- Reject Button -->
                 <button name="action_reject_document" type="object"
-                    string="❌" class="oe_secondary"
+                    class="oe_secondary"
                     icon="fa-times"
                     invisible="state != 'new'"/>
             </list>
