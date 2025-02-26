@@ -7,7 +7,7 @@
                 <field name="name"/>
                 <field name="application_id"/>
                 <field name="type_id"/>
-                <field name="state"/>
+                <field name="state" widget="badge"/>
             </list>
         </field>
     </record>
@@ -18,13 +18,16 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="application_id"/>
-                        <field name="type_id"/>
-                        <field name="attachment"/>
-                        <field name="state"/>
-                    </group>
+                    <notebook>
+                        <page string="Document Information">
+                            <group>
+                                <field name="name"/>
+                                <field name="type_id"/>
+                                <field name="attachment" widget="binary"/>
+                                <field name="state" widget="badge"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
