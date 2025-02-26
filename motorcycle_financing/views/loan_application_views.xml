@@ -44,7 +44,7 @@
                             <field name="date_rejection"/>
                             <field name="currency_id"/>
                             <field name="date_signed"/>
-                            <field name="state" widget="badge"/>
+                            <!--<field name="state" widget="badge"/>-->
                         </group>
 
 
@@ -62,12 +62,12 @@
                     <notebook>
                         <page string="Documents">
                             <field name="document_ids">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="type_id"/>
                                     <field name="attachment" widget="binary"/>
                                     <field name="state" widget="badge"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
