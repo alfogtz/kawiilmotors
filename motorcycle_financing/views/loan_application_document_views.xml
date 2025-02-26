@@ -3,11 +3,23 @@
         <field name="name">loan.application.document.tree</field>
         <field name="model">loan.application.document</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom">
                 <field name="name"/>
                 <field name="application_id"/>
                 <field name="type_id"/>
                 <field name="state" widget="badge"/>
+
+                <!-- Approve Button -->
+                <button name="action_approve_document" type="object"
+                    string="✔️" class="oe_highlight"
+                    icon="fa-check"
+                    invisible="state != 'new'"/>
+
+                <!-- Reject Button -->
+                <button name="action_reject_document" type="object"
+                    string="❌" class="oe_secondary"
+                    icon="fa-times"
+                    invisible="state != 'new'"/>
             </list>
         </field>
     </record>
@@ -16,7 +28,19 @@
         <field name="name">loan.application.document.form</field>
         <field name="model">loan.application.document</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Loan Application Document">
+                <header>
+                    <button name="action_approve_document" type="object"
+                        string="Approve" class="oe_highlight"
+                        icon="fa-check"
+                        invisible="state != 'new'"/>
+
+                    <button name="action_reject_document" type="object"
+                        string="Reject" class="oe_secondary"
+                        icon="fa-times"
+                        invisible="state != 'new'"/>
+                </header>
+
                 <sheet>
                     <notebook>
                         <page string="Document Information">

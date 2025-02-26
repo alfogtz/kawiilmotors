@@ -14,3 +14,18 @@ class LoanApplicationDocument(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected')
     ], default='new', string="Status")
+
+    @api.depends('state')
+    def _compute_document_status(self):
+        for record in self:
+            record.is_approved = record.state == 'approved'
+
+    is_approved = fields.Boolean(string="Is Approved?", compute="_compute_document_status", store=True)
+
+    def action_approve_document(self):
+        for record in self:
+            record.state = 'approved'
+
+    def action_reject_document(self):
+        for record in self:
+            record.state = 'rejected'
