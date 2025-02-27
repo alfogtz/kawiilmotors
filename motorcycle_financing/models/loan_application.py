@@ -4,6 +4,7 @@ from datetime import date
 class LoanApplication(models.Model):
     _name = 'loan.application'
     _description = 'Loan Application'
+    _order = 'date_application desc'
 
     name = fields.Char(string="Application Number", required=True)
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)

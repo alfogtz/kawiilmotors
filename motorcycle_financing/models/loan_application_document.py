@@ -4,6 +4,9 @@ class LoanApplicationDocument(models.Model):
 
     _name = 'loan.application.document'
     _description = 'Document related with the loan'
+    _order = 'sequence'
+
+    sequence = fields.Integer(string="sequence", default=10)
 
     name = fields.Char(string = 'Document name', required = True)
     application_id = fields.Many2one('loan.application', string='Loan Application')

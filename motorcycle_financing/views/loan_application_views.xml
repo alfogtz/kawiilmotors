@@ -31,7 +31,8 @@
                         <field name="state" widget="statusbar"/>
                         <group invisible="state not in ('draft')">
                             <button name="action_send_for_approval" type="object" string="Send for Approval"
-                                    class="oe_highlight"/>
+                                    class="oe_highlight"
+                                    invisible="state in ('approved', 'rejected', 'signed')"/>
                         </group>
 
                         <group invisible="state not in ('sent')">
@@ -42,7 +43,8 @@
                         <group invisible="state not in ('sent')">
                             <button name="action_reject_loan" type="object" string="Reject Loan"
                                     class="btn-danger"
-                                    confirm="Are you sure you want to reject this loan?"/>
+                                    confirm="Are you sure you want to reject this loan?"
+                                    invisible="state in ('approved', 'signed')"/>
                         </group>
                     </header>
 
@@ -50,13 +52,16 @@
 
                     <group>
                         <group string="CUSTOMER INFO">
-                            <field name="name" widget="text" options="{'line_breaks': False}"/>
+                            <field name="name" widget="text" options="{'line_breaks': False}"
+                                   readonly="context.get('state') != 'draft'"/>
                             <field name="sale_order_id"/>
                             <field name="partner_name"/>
-                            <field name="date_application"/>
+                            <field name="date_application"
+                                readonly="context.get('state') != 'draft'"/>
                             <field name="date_approval"/>
                             <field name="date_rejection"/>
-                            <field name="currency_id"/>
+                            <field name="currency_id"
+                                readonly="context.get('state') != 'draft'"/>
                             <field name="date_signed"/>
                             <!--<field name="state" widget="badge"/>-->
                         </group>
@@ -64,10 +69,14 @@
 
                         <group string="LOAN INFO">
                             <field name="sale_order_total"/>
-                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="interest_rate" widget="percentage"/>
-                            <field name="loan_term"/>
+                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"
+                                readonly="context.get('state') != 'draft'"/>
+                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"
+                                readonly="context.get('state') != 'draft'"/>
+                            <field name="interest_rate" widget="percentage"
+                                readonly="context.get('state') != 'draft'"/>
+                            <field name="loan_term"
+                                readonly="context.get('state') != 'draft'"/>
                             <field name="document_count"/>
                             <field name="document_count_approved"/>
                         </group>
@@ -76,10 +85,10 @@
                     <notebook>
                         <page string="Documents">
                             <field name="document_ids">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="type_id"/>
-                                    <field name="attachment" widget="binary"/>
+                                <list editable="bottom">
+                                    <field name="name" readonly="context.get('state') != 'draft'"/>
+                                    <field name="type_id" readonly="context.get('state') != 'draft'"/>
+                                    <field name="attachment" widget="binary" readonly="context.get('state') != 'draft'"/>
                                     <field name="state" widget="badge"/>
                                     <button name="action_approve_document" type="object"
                                         class="oe_secondary"
