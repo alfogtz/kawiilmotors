@@ -123,7 +123,7 @@ class LoanApplication(models.Model):
     @api.depends("sale_order_id.partner_id", "product_template_id")
     def _compute_display_name(self):
         for record in self:
-            if record.sale_order_id.partner_id and record.product_template_id:
-                record.name = f"{record.sale_order_id.partner_id.name} - {record.product_template_id.name}"
-            else:
-                record.name = "New Loan Application"
+            customer_name = record.sale_order_id.partner_id.name if record.sale_order_id.partner_id else "Unknown Customer"
+            motorcycle_name = record.product_template_id.name if record.product_template_id else "Unknown Motorcycle"
+
+            record.name = f"{customer_name} - {motorcycle_name}"
