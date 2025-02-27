@@ -4,10 +4,14 @@
         <field name="model">loan.application.document</field>
         <field name="arch" type="xml">
             <list editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="application_id"/>
                 <field name="type_id"/>
-                <field name="state" widget="badge"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'approved'"
+                    decoration-muted="state == 'new'"
+                    decoration-danger="state == 'rejected'"/>
 
                 <!-- Approve Button -->
                 <button name="action_approve_document" type="object"
