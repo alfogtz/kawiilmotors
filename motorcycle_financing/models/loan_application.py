@@ -20,10 +20,10 @@ class LoanApplication(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('sent', 'Sent'),
-        ('review', 'Credit Check'),
+        #('review', 'Credit Check'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
-        ('signed', 'Signed'),
+        #('signed', 'Signed'),
         ('cancel', 'Canceled'),
     ], string="Status", default='draft', copy=False)
     notes = fields.Html(string="Notes", copy=False)
