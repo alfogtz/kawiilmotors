@@ -84,9 +84,9 @@
                         <page string="Documents">
                             <field name="document_ids">
                                 <list editable="bottom">
-                                    <field name="name" readonly="state != 'draft'"/>
-                                    <field name="type_id" readonly="state != 'draft'"/>
-                                    <field name="attachment" widget="binary" readonly="state != 'draft'"/>
+                                    <field name="name" readonly="state != 'new'"/>
+                                    <field name="type_id" readonly="state != 'new'"/>
+                                    <field name="attachment" widget="binary" readonly="state != 'new'"/>
                                     <field name="state" widget="badge"
                                         decoration-success="state == 'approved'"
                                         decoration-muted="state == 'new'"
