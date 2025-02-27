@@ -54,7 +54,7 @@
                         <group string="CUSTOMER INFO">
                             <field name="name" widget="text" options="{'line_breaks': False}"
                                    readonly="state != 'draft'"/>
-                            <field name="sale_order_id"/>
+                            <field name="sale_order_id" readonly="state != 'draft'"/>
                             <field name="partner_name"/>
                             <field name="date_application"/>
                             <field name="date_approval"/>
@@ -84,6 +84,7 @@
                         <page string="Documents">
                             <field name="document_ids">
                                 <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="name" readonly="state != 'new'"/>
                                     <field name="type_id" readonly="state != 'new'"/>
                                     <field name="attachment" widget="binary" readonly="state != 'new'"/>
