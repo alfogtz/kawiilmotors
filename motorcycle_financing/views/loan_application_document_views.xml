@@ -1,0 +1,63 @@
+<odoo>
+    <record id="view_loan_application_document_tree" model="ir.ui.view">
+        <field name="name">loan.application.document.tree</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name" readonly="state != 'new'"/>
+                <field name="application_id"/>
+                <field name="type_id" readonly="state != 'new'" />
+                <field name="state" widget="badge"
+                    decoration-success="state == 'approved'"
+                    decoration-muted="state == 'new'"
+                    decoration-danger="state == 'rejected'"/>
+
+                <!-- Approve Button -->
+                <button name="action_approve_document" type="object"
+                    class="oe_secondary"
+                    icon="fa-check"
+                    invisible="state != 'new'"/>
+
+                <!-- Reject Button -->
+                <button name="action_reject_document" type="object"
+                    class="oe_secondary"
+                    icon="fa-times"
+                    invisible="state != 'new'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_loan_application_document_form" model="ir.ui.view">
+        <field name="name">loan.application.document.form</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <form string="Loan Application Document">
+                <header>
+                    <button name="action_approve_document" type="object"
+                        string="Approve" class="oe_highlight"
+                        icon="fa-check"
+                        invisible="state != 'new'"/>
+
+                    <button name="action_reject_document" type="object"
+                        string="Reject" class="oe_secondary"
+                        icon="fa-times"
+                        invisible="state != 'new'"/>
+                </header>
+
+                <sheet>
+                    <notebook>
+                        <page string="Document Information">
+                            <group>
+                                <field name="name"/>
+                                <field name="type_id"/>
+                                <field name="attachment" widget="binary"/>
+                                <field name="state" widget="badge"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

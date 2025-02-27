@@ -1,0 +1,30 @@
+<odoo>
+    <!--Loan Documents -->
+    <record id="action_loan_application_document" model="ir.actions.act_window">
+        <field name="name">Loan Documents</field>
+        <field name="res_model">loan.application.document</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Document Types -->
+    <record id="action_loan_application_document_type" model="ir.actions.act_window">
+        <field name="name">Document Types</field>
+        <field name="res_model">loan.application.document.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Loan Tags -->
+    <record id="action_loan_application_tag" model="ir.actions.act_window">
+        <field name="name">Loan Tags</field>
+        <field name="res_model">loan.application.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Loan Applications -->
+    <record id="action_loan_application" model="ir.actions.act_window">
+        <field name="name">Loan Applications</field>
+        <field name="res_model">loan.application</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
