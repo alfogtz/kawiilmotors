@@ -88,7 +88,7 @@ class LoanApplication(models.Model):
 
             loan.write({
                 'state': 'sent',
-                'date_sent': date.today()
+                'date_application': date.today()
             })
 
     # Loan approval
