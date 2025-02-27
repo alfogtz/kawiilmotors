@@ -5,8 +5,9 @@ class LoanApplication(models.Model):
     _name = 'loan.application'
     _description = 'Loan Application'
     _order = 'date_application desc'
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Application Number", required=True)
+    name = fields.Char(compute="_compute_display_name", store=True)
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
@@ -33,7 +34,7 @@ class LoanApplication(models.Model):
     partner_name = fields.Char(related="partner_id.name", readonly=True, store=True)
     sale_order_id = fields.Many2one('sale.order',string='Related Sale Order')
     user_id = fields.Many2one(related="sale_order_id.user_id", readonly=True, store=True)
-    product_template_id = fields.Many2one('product.template', string='Product')
+    product_template_id = fields.Many2one('product.template', string='Motorcycle')
     sale_order_total = fields.Monetary(related="sale_order_id.amount_total", readonly=True, store=True)
 
     _sql_constraints = [
@@ -116,3 +117,13 @@ class LoanApplication(models.Model):
             'state': 'rejected',
             'date_rejection': date.today()
         })
+
+
+    #Create the automatic name for the new loan requirement
+    @api.depends("sale_order_id.partner_id", "product_template_id")
+    def _compute_display_name(self):
+        for record in self:
+            if record.sale_order_id.partner_id and record.product_template_id:
+                record.name = f"{record.sale_order_id.partner_id.name} - {record.product_template_id.name}"
+            else:
+                record.name = "New Loan Application"
