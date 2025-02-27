@@ -5,9 +5,9 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="sequence" widget="handle"/>
-                <field name="name" readonly="context.get('loan_state') not in ('draft')"/>
+                <field name="name" readonly="state != 'draft'"/>
                 <field name="application_id"/>
-                <field name="type_id" readonly="context.get('loan_state') not in ('draft')"/>
+                <field name="type_id" readonly="state != 'draft'""state != 'draft'"/>
                 <field name="state" widget="badge"
                     decoration-success="state == 'approved'"
                     decoration-muted="state == 'new'"

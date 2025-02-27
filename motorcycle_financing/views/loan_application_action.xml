@@ -25,7 +25,6 @@
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'loan_state': state}</field>
     </record>
 
 </odoo>
