@@ -1,15 +1,14 @@
 from odoo import models, fields, api, exceptions
 from datetime import date
 
+
 class LoanApplication(models.Model):
     _name = 'loan.application'
     _description = 'Loan Application'
     _order = 'date_application desc'
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    _inherit = loan.application
 
-
-    name = fields.Char(compute="_compute_display_name", store=True)
+    name = fields.Char(compute="_compute_display_name")
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
@@ -23,20 +22,20 @@ class LoanApplication(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('sent', 'Sent'),
-        #('review', 'Credit Check'),
+        # ('review', 'Credit Check'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
-        #('signed', 'Signed'),
+        # ('signed', 'Signed'),
         ('cancel', 'Canceled'),
     ], string="Status", default='draft', copy=False)
     notes = fields.Html(string="Notes", copy=False)
-    document_ids = fields.One2many('loan.application.document','application_id',string='Documents')
-    tag_ids = fields.Many2many('loan.application.tag',string='Tags')
+    document_ids = fields.One2many('loan.application.document', 'application_id', string='Documents')
+    tag_ids = fields.Many2many('loan.application.tag', string='Tags')
     partner_id = fields.Many2one(related="sale_order_id.partner_id", readonly=True, store=True)
     partner_name = fields.Char(related="partner_id.name", readonly=True, store=True)
-    sale_order_id = fields.Many2one('sale.order',string='Related Sale Order')
+    sale_order_id = fields.Many2one('sale.order', string='Related Sale Order')
     user_id = fields.Many2one(related="sale_order_id.user_id", readonly=True, store=True)
-    product_template_id = fields.Many2one('product.template', string='Motorcycle')
+    product_id = fields.Many2one('product.template', string='Motorcycle')
     sale_order_total = fields.Monetary(related="sale_order_id.amount_total", readonly=True, store=True)
 
     _sql_constraints = [
@@ -101,7 +100,7 @@ class LoanApplication(models.Model):
             'date_approval': date.today()
         })
 
-    #Loan rejection
+    # Loan rejection
     # def action_reject_loan(self, rejection_reason=False):
     #     if not rejection_reason:
     #         raise exceptions.ValidationError("Please provide a reason for rejection.")
@@ -120,21 +119,45 @@ class LoanApplication(models.Model):
             'date_rejection': date.today()
         })
 
+    # @api.depends("partner_id", "product_id")
+    # def _compute_display_name(self):
+    #     """Override Odoo's _compute_display_name to assign custom display names."""
+    #     super(LoanApplication, self)._compute_display_name()  # Call base method
 
-    @api.depends("partner_id", "product_id")
+    #     for application in self:
+    #         # If there's a sales order, use its partner and product name
+    #         if application.partner_id and application.product_id:
+    #             application.display_name = f"{application.partner_id.name} - {application.product_id.name}"
+    #         else:
+    #             application.display_name = self._assign_default_name(application)
+
+    @api.depends("sale_order_id", "sale_order_id.partner_id", "sale_order_id.order_line.product_id", "product_id")
     def _compute_display_name(self):
-        """Override Odoo's _compute_display_name to assign custom display names."""
-        super(LoanApplication, self)._compute_display_name()  # Call base method
-
+        """Compute display_name dynamically while ensuring a default value is always set."""
         for application in self:
-            # If there's a sales order, use its partner and product name
-            if application.partner_id and application.product_id:
-                application.display_name = f"{application.partner_id.name} - {application.product_id.name}"
-            else:
-                application.display_name = self._assign_default_name(application)
+            customer_name = application._get_customer_name()
+            motorcycle_name = application._get_product_name()
+            application.name = f"{customer_name} - {motorcycle_name}"
 
-    def _assign_default_name(self, application):
-        """Handles name assignment when no sales order exists."""
-        customer_name = application.partner_id.name if application.partner_id else "Unknown Customer"
-        product_name = application.product_id.name if application.product_id else "Unknown Product"
-        return f"{customer_name} - {product_name}"
+    def _get_customer_name(self):
+        """Retrieve the customer name from the Sale Order or return a default value."""
+        for application in self:
+            if application.sale_order_id and application.sale_order_id.partner_id:
+                return application.sale_order_id.partner_id.name
+        return "Unknown Customer"
+
+    def _get_product_name(self):
+        """Retrieve the product name from the Sale Order or return a default value."""
+        for application in self:
+            # Priority 1: If a product is manually set in the Loan Application
+            if application.product_id:
+                return application.product_id.name
+
+            # Priority 2: If a Sale Order is linked, get the first product from order lines
+            if application.sale_order_id and application.sale_order_id.order_line:
+                first_product = application.sale_order_id.order_line[0].product_id
+                if first_product:
+                    return first_product.name
+
+        # Default value if no product is found
+        return "Unknown Product"
