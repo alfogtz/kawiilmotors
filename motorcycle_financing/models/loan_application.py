@@ -8,6 +8,7 @@ class LoanApplication(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _inherit = loan.application
 
+
     name = fields.Char(compute="_compute_display_name", store=True)
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
