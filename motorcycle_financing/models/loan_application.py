@@ -6,6 +6,7 @@ class LoanApplication(models.Model):
     _description = 'Loan Application'
     _order = 'date_application desc'
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = loan.application
 
     name = fields.Char(compute="_compute_display_name", store=True)
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
@@ -119,11 +120,20 @@ class LoanApplication(models.Model):
         })
 
 
-    #Create the automatic name for the new loan requirement
-    @api.depends("sale_order_id.partner_id", "product_template_id")
+    @api.depends("partner_id", "product_id")
     def _compute_display_name(self):
-        for record in self:
-            customer_name = record.sale_order_id.partner_id.name if record.sale_order_id.partner_id else "Unknown Customer"
-            motorcycle_name = record.product_template_id.name if record.product_template_id else "Unknown Motorcycle"
+        """Override Odoo's _compute_display_name to assign custom display names."""
+        super(LoanApplication, self)._compute_display_name()  # Call base method
 
-            record.name = f"{customer_name} - {motorcycle_name}"
+        for application in self:
+            # If there's a sales order, use its partner and product name
+            if application.partner_id and application.product_id:
+                application.display_name = f"{application.partner_id.name} - {application.product_id.name}"
+            else:
+                application.display_name = self._assign_default_name(application)
+
+    def _assign_default_name(self, application):
+        """Handles name assignment when no sales order exists."""
+        customer_name = application.partner_id.name if application.partner_id else "Unknown Customer"
+        product_name = application.product_id.name if application.product_id else "Unknown Product"
+        return f"{customer_name} - {product_name}"
