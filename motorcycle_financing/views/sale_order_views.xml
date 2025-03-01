@@ -1,0 +1,59 @@
+<odoo>
+    <!-- Inherit the sale order form view to add a "Financing" section -->
+    <record id="view_order_form_inherit_financing" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.financing</field>
+        <field name="model">sale.order</field>
+        <!-- Inherit the default sale order form view -->
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add a new "Financing" section inside the first <group> found within <sheet> -->
+            <xpath expr="//sheet/group" position="inside">
+                <group string="Financing">
+                    <!-- Field linking this sale order to a loan application -->
+                    <field name="loan_application_id"/>
+                    <!-- Status bar to track the financing state -->
+                    <field name="state" widget="statusbar"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit the sale order form again to add a new "Loan Applications" tab -->
+    <record id="view_order_form_inherit_loans" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.loans</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Find the <notebook> section and add a new tab inside -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Loan Applications">
+                    <!-- Show all loan applications linked to this sale order -->
+                    <field name="loan_application_ids">
+                        <tree editable="bottom"> <!-- Allows adding/removing records inside the list -->
+                            <field name="name"/> <!-- Loan name or identifier -->
+                            <field name="partner_id"/> <!-- Customer linked to the loan -->
+                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="interest_rate" widget="percentage"/> <!-- Loan interest rate -->
+                            <field name="loan_term"/> <!-- Loan term (months/years) -->
+                            <field name="state" widget="badge"/> <!-- Status of the loan application -->
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_inherit_loan_button" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.loan.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add a button inside the sale order header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_create_loan_application" type="object" string="Apply Loan"
+                        class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
