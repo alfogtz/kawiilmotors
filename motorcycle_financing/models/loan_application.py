@@ -131,33 +131,23 @@ class LoanApplication(models.Model):
     #         else:
     #             application.display_name = self._assign_default_name(application)
 
-    @api.depends("sale_order_id", "sale_order_id.partner_id", "sale_order_id.order_line.product_id", "product_id")
+    @api.depends("partner_id", "product_id", "sale_order_id.order_line.product_id")
     def _compute_display_name(self):
         """Compute display_name dynamically while ensuring a default value is always set."""
+        res = super(LoanApplication, self)._compute_display_name()
         for application in self:
-            customer_name = application._get_customer_name()
+            customer_name = application.partner_id.name if application.partner_id else "Unknown Customer"
             motorcycle_name = application._get_product_name()
             application.name = f"{customer_name} - {motorcycle_name}"
 
-    def _get_customer_name(self):
-        """Retrieve the customer name from the Sale Order or return a default value."""
-        for application in self:
-            if application.sale_order_id and application.sale_order_id.partner_id:
-                return application.sale_order_id.partner_id.name
-        return "Unknown Customer"
-
     def _get_product_name(self):
-        """Retrieve the product name from the Sale Order or return a default value."""
-        for application in self:
-            # Priority 1: If a product is manually set in the Loan Application
-            if application.product_id:
-                return application.product_id.name
+        """Retrieve the product name from the first product in the Sale Order."""
+        if self.product_id:
+            return self.product_id.name  # Usa directamente product_id si está definido
 
-            # Priority 2: If a Sale Order is linked, get the first product from order lines
-            if application.sale_order_id and application.sale_order_id.order_line:
-                first_product = application.sale_order_id.order_line[0].product_id
-                if first_product:
-                    return first_product.name
+        if self.sale_order_id and self.sale_order_id.order_line:
+            first_product = self.sale_order_id.order_line[0].product_id
+            if first_product:
+                return first_product.name
 
-        # Default value if no product is found
         return "Unknown Product"
