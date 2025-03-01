@@ -139,15 +139,34 @@ class LoanApplication(models.Model):
             customer_name = application.partner_id.name if application.partner_id else "Unknown Customer"
             motorcycle_name = application._get_product_name()
             application.name = f"{customer_name} - {motorcycle_name}"
+            application.display_name = f"{customer_name} - {motorcycle_name}"
 
     def _get_product_name(self):
-        """Retrieve the product name from the first product in the Sale Order."""
-        if self.product_id:
-            return self.product_id.name  # Usa directamente product_id si está definido
-
+        """Retrieve the product name from the Sale Order based on category 'Motorcycles'."""
         if self.sale_order_id and self.sale_order_id.order_line:
-            first_product = self.sale_order_id.order_line[0].product_id
-            if first_product:
-                return first_product.name
+            for line in self.sale_order_id.order_line:
+                if line.product_id.categ_id and line.product_id.categ_id.name == "Motorcycles":
+                    return line.product_id.name  # Regresa el primer producto que cumpla la condición
 
         return "Unknown Product"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        #auto-generates required documents
+        applications = super().create(vals_list)
+
+        document_types = self.env['loan.application.document.type'].search([('active', '=', True)])
+
+        documents_to_create = []
+        for application in applications:
+            for doc_type in document_types:
+                documents_to_create.append({
+                    'application_id': application.id,
+                    'type_id': doc_type.id,
+                    'name': f"{doc_type.name} - {application.name}",
+                })
+
+        if documents_to_create:
+            self.env['loan.application.document'].create(documents_to_create)
+
+        return applications
