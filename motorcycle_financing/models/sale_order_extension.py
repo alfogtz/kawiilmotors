@@ -1,9 +1,10 @@
 from odoo import models, fields
 
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    loan_application_id = fields.Many2one('loan.application', string="Loan Application")
+    loan_application_id = fields.One2many('loan.application', 'sale_order_id', string="Loan Application")
     state = fields.Selection(selection_add=[
         ('loan_applied', 'Applied for Loan')
     ], ondelete={'loan_applied': 'set default'})
@@ -13,6 +14,8 @@ class SaleOrder(models.Model):
         'sale_order_id',  # Field in loan.application that links to sale.order
         string="Loan Applications"
     )
+
+    is_financed = fields.Boolean(string="Financing?", default=False)
 
     def action_create_loan_application(self):
         """Creates a loan application pre-filled with sale order data and redirects to it."""
@@ -38,3 +41,4 @@ class SaleOrder(models.Model):
             'view_id': self.env.ref('motorcycle_financing.loan_application_form_view').id,  # Ensure this exists
             'target': 'current',
         }
+
