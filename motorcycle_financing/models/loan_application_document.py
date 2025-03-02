@@ -9,7 +9,8 @@ class LoanApplicationDocument(models.Model):
     sequence = fields.Integer(string="sequence", default=10)
 
     name = fields.Char(string = 'Document name', required = True)
-    application_id = fields.Many2one('loan.application', string='Loan Application')
+    application_id = fields.Many2one(
+    'loan.application', string='Loan Application', ondelete="cascade")
     type_id = fields.Many2one('loan.application.document.type', string="Document Type")
     attachment = fields.Binary(string="File")
     state = fields.Selection([

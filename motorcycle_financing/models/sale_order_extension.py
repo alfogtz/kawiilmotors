@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api, exceptions
 
 
 class SaleOrder(models.Model):
@@ -18,27 +18,51 @@ class SaleOrder(models.Model):
     is_financed = fields.Boolean(string="Financing?", default=False)
 
     def action_create_loan_application(self):
-        """Creates a loan application pre-filled with sale order data and redirects to it."""
-        self.ensure_one()  # Ensures only one sale order is selected
+        """Opens the loan application form pre-filled with sale order data."""
+        self.ensure_one()  # Ensure only one sale order is processed at a time
 
-        # Create the loan application record with pre-filled values
-        loan_application = self.env['loan.application'].create({
-            'sale_order_id': self.id,  # Link to the current sale order
-            'partner_id': self.partner_id.id,  # Customer
-            'product_id': False,  # Not needed, will be computed dynamically
-            'name': False,  # Not needed, _compute_display_name will generate it
-            'loan_amount': self.amount_total,  # Total loan amount = order total - down payment
-            'currency_id': self.currency_id.id,  # Currency from sale order
-        })
+        # Validate motorcycle presence and uniqueness
+        motorcycle_product = self._get_motorcycle_product()
 
-        # Redirect to the newly created loan application form view
+        # Prepare context with default values
+        context = self._prepare_loan_application_context(motorcycle_product)
+
+        # Change state to "Applied for Loan"
+        self.write({'state': 'loan_applied'})
+
         return {
             'name': "Loan Application",
             'type': 'ir.actions.act_window',
             'res_model': 'loan.application',
-            'res_id': loan_application.id,
             'view_mode': 'form',
             'view_id': self.env.ref('motorcycle_financing.loan_application_form_view').id,  # Ensure this exists
             'target': 'current',
+            'context': context,
         }
 
+    def _prepare_loan_application_context(self, motorcycle_product):
+        """Prepara los valores por defecto para la solicitud de préstamo."""
+        self.ensure_one()
+
+        return {
+            'default_sale_order_id': self.id,
+            # Eliminamos 'default_product_id' para evitar duplicaciones
+            'default_name': f"{self.partner_id.name} - {motorcycle_product.name}",
+            'default_currency_id': self.currency_id.id,
+            'default_loan_amount': self.amount_total,
+        }
+
+    def _get_motorcycle_product(self):
+        """Retrieves the actual motorcycle product record from the sale order lines."""
+        self.ensure_one()
+
+        # Filter sale.order.line to find products in the "Motorcycles" category
+        motorcycle_lines = self.order_line.filtered(lambda line: line.product_id.categ_id.name == "Motorcycles")
+
+        if not motorcycle_lines:
+            raise exceptions.UserError("A motorcycle must be included in the order to apply for a loan.")
+
+        if len(motorcycle_lines) > 1:
+            raise exceptions.UserError("Only one motorcycle can be included per loan application.")
+
+        return motorcycle_lines.product_id.product_tmpl_id

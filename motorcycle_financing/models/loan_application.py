@@ -33,8 +33,8 @@ class LoanApplication(models.Model):
     tag_ids = fields.Many2many('loan.application.tag', string='Tags')
     partner_id = fields.Many2one(related="sale_order_id.partner_id", readonly=True, store=True)
     partner_name = fields.Char(related="partner_id.name", readonly=True, store=True)
-    #in the next line, ondelete defines what happens if I delete a SO linked to a loan, I could set it
-    #as cascade if I wanted the loan to disappear if the sales order is deleted.
+    # in the next line, ondelete defines what happens if I delete a SO linked to a loan, I could set it
+    # as cascade if I wanted the loan to disappear if the sales order is deleted.
     sale_order_id = fields.Many2one('sale.order', string='Related Sale Order', ondelete="set null")
     user_id = fields.Many2one(related="sale_order_id.user_id", readonly=True, store=True)
     product_id = fields.Many2one('product.template', string='Motorcycle')
@@ -154,21 +154,27 @@ class LoanApplication(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        #auto-generates required documents
         applications = super().create(vals_list)
 
         document_types = self.env['loan.application.document.type'].search([('active', '=', True)])
 
-        documents_to_create = []
         for application in applications:
-            for doc_type in document_types:
-                documents_to_create.append({
+            # Asegurar que product_id se asigna correctamente desde la orden de venta
+            if not application.product_id and application.sale_order_id:
+                application.product_id = application.sale_order_id._get_motorcycle_product()
+
+            # Flush para asegurar que product_id se guarda antes de crear documentos
+            self.env.cr.flush()
+
+            # Crear documentos solo si el product_id es válido
+            if application.product_id:
+                documents_to_create = [{
                     'application_id': application.id,
                     'type_id': doc_type.id,
                     'name': f"{doc_type.name} - {application.name}",
-                })
+                } for doc_type in document_types]
 
-        if documents_to_create:
-            self.env['loan.application.document'].create(documents_to_create)
+                if documents_to_create:
+                    self.env['loan.application.document'].create(documents_to_create)
 
         return applications
