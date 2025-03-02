@@ -108,6 +108,7 @@
                         <field name="rejection_reason"/>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

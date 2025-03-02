@@ -8,7 +8,7 @@ class LoanApplication(models.Model):
     _order = 'date_application desc'
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(compute="_compute_display_name")
+    name = fields.Char(compute="_compute_display_name", track_visibility="always")
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
@@ -27,7 +27,7 @@ class LoanApplication(models.Model):
         ('rejected', 'Rejected'),
         # ('signed', 'Signed'),
         ('cancel', 'Canceled'),
-    ], string="Status", default='draft', copy=False)
+    ], string="Status", default='draft', track_visibility="always", copy=False)
     notes = fields.Html(string="Notes", copy=False)
     document_ids = fields.One2many('loan.application.document', 'application_id', string='Documents')
     tag_ids = fields.Many2many('loan.application.tag', string='Tags')
@@ -94,6 +94,7 @@ class LoanApplication(models.Model):
                 'state': 'sent',
                 'date_application': date.today()
             })
+            loan.message_post(body="Loan application has been sent for approval.", subtype_xmlid="mail.mt_comment")
 
     # Loan approval
     def action_approve_loan(self):
@@ -101,6 +102,7 @@ class LoanApplication(models.Model):
             'state': 'approved',
             'date_approval': date.today()
         })
+        self.message_post(body="Loan application has been approved.", subtype_xmlid="mail.mt_comment")
 
     # Loan rejection
     # def action_reject_loan(self, rejection_reason=False):
@@ -120,6 +122,7 @@ class LoanApplication(models.Model):
             'state': 'rejected',
             'date_rejection': date.today()
         })
+        self.message_post(body="Loan application has been rejected.", subtype_xmlid="mail.mt_comment")
 
     # @api.depends("partner_id", "product_id")
     # def _compute_display_name(self):

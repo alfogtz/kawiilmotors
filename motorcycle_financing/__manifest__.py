@@ -7,7 +7,7 @@
     'author': 'alfogtz',
     'website': 'https://github.com/alfogtz/kawiilmotors',
     'version': '18.0.0.0.1',
-    'depends': ['sale'],
+    'depends': ['sale', 'mail'],
     'data': ['security/motorcycle_financing_groups.xml',
              'security/ir.model.access.csv',
              'security/document_security.xml',
