@@ -1,31 +1,25 @@
-from odoo import models, fields, api
+from odoo import _, models, fields, api
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    application_ids = fields.One2many(
-        'loan.application', 'partner_id', string="Loan Applications"
-    )
 
-    application_count = fields.Integer(
-        string="Loan Applications Count",
-        compute="_compute_application_count",
-        store=True
-    )
+    application_ids = fields.One2many(comodel_name="loan.application", inverse_name="partner_id")
+    application_count = fields.Integer(compute='_compute_loan_application_count')
 
     @api.depends('application_ids')
     def _compute_application_count(self):
         for partner in self:
-            partner.application_count = len(partner.application_ids)
+            partner.application_count = self.env['loan.application'].search_count(
+                [('partner_id', '=', partner.id)]
+            )
 
-    def action_view_loans(self):
-        """Opens a filtered list of loan applications for this customer."""
-        self.ensure_one()
+    def action_view_loan_applications(self):
         return {
-            'name': 'Loan Applications',
             'type': 'ir.actions.act_window',
+            'name': _("Related Applications"),
+            'view_mode': 'list,form',
             'res_model': 'loan.application',
-            'view_mode': 'tree,form',
             'domain': [('partner_id', '=', self.id)],
             'context': {'default_partner_id': self.id},
         }
