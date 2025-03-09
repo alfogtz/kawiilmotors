@@ -5,10 +5,10 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button name="action_view_applications"
+                <button name="action_view_loan_applications"
                         type="object"
                         class="oe_stat_button"
-                        icon="fa-taxi">
+                        icon="fa-credit-card">
                     <field name="application_count" widget="statinfo" string="Loans"/>
                 </button>
             </div>

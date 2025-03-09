@@ -5,7 +5,7 @@ class ResPartner(models.Model):
 
 
     application_ids = fields.One2many(comodel_name="loan.application", inverse_name="partner_id")
-    application_count = fields.Integer(compute='_compute_loan_application_count')
+    application_count = fields.Integer(compute='_compute_application_count')
 
     @api.depends('application_ids')
     def _compute_application_count(self):

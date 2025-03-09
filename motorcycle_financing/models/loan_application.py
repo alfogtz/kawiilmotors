@@ -25,7 +25,7 @@ class LoanApplication(models.Model):
         # ('review', 'Credit Check'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
-        # ('signed', 'Signed'),
+        ('signed', 'Signed'),
         ('cancel', 'Canceled'),
     ], string="Status", default='draft', track_visibility="always", copy=False)
     notes = fields.Html(string="Notes", copy=False)
