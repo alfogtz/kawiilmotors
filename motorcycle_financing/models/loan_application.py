@@ -160,6 +160,7 @@ class LoanApplication(models.Model):
 
         return applications
 
+
     @api.onchange('customer_signature')
     def _onchange_customer_signature(self):
         if self.customer_signature and self.state != 'signed':
