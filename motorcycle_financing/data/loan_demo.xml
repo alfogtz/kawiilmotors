@@ -16,7 +16,7 @@
         <field name="loan_amount">9000</field>
         <field name="down_payment">0</field>
         <field name="loan_term">24</field>
-        <field name="state">signed</field>
+        <field name="state">draft</field>
         <field name="date_application" eval="(DateTime.today() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
     </record>
 
@@ -26,7 +26,7 @@
         <field name="loan_amount">25000</field>
         <field name="down_payment">0</field>
         <field name="loan_term">64</field>
-        <field name="state">approved</field>
+        <field name="state">draft</field>
         <field name="date_application" eval="(DateTime.today() - relativedelta(months=2)).strftime('%Y-%m-%d')"/>
     </record>
 </odoo>
