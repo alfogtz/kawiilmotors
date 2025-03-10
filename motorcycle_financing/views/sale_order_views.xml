@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.view.order.inherit.financing</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_confirm" position="after">
+                <field name="is_financed" invisible="True"/> <!-- This field is used to make the button invisible. This comment is mandatory to pass the check invisible test. -->
+                <button name="action_create_loan_application" id="action_create_loan_application" string="Apply Loan"
+                        class="btn-primary" type="object" invisible="not is_financed or loan_application_ids"/>
+            </button>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_financed" readonly="loan_application_ids"/>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,sent,loan_applied,sale</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']" position="after">
+                <page string="Loan Applications" name="loan_applications" invisible="not is_financed">
+                    <field name="loan_application_ids" mode="list"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

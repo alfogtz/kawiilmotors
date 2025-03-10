@@ -1,4 +1,5 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 class LoanApplicationDocument(models.Model):
 
@@ -9,7 +10,8 @@ class LoanApplicationDocument(models.Model):
     sequence = fields.Integer(string="sequence", default=10)
 
     name = fields.Char(string = 'Document name', required = True)
-    application_id = fields.Many2one('loan.application', string='Loan Application')
+    application_id = fields.Many2one(
+    'loan.application', string='Loan Application', ondelete="cascade")
     type_id = fields.Many2one('loan.application.document.type', string="Document Type")
     attachment = fields.Binary(string="File")
     state = fields.Selection([
@@ -32,3 +34,10 @@ class LoanApplicationDocument(models.Model):
     def action_reject_document(self):
         for record in self:
             record.state = 'rejected'
+
+    def unlink(self):
+        """ No permitir eliminar documentos aprobados """
+        for record in self:
+            if record.state == 'approved' and not self.env.user.has_group('motorcycle_financing.financing_admin'):
+                raise ValidationError(_("You cannot delete an approved document."))
+        return super(LoanApplicationDocument, self).unlink()
