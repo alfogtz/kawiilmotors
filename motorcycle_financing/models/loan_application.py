@@ -31,7 +31,7 @@ class LoanApplication(models.Model):
     document_ids = fields.One2many('loan.application.document', 'application_id', string='Documents')
     tag_ids = fields.Many2many('loan.application.tag', string='Tags')
     partner_id = fields.Many2one(related="sale_order_id.partner_id", readonly=True, store=True)
-    partner_name = fields.Char(related="partner_id.name", readonly=True, store=True)
+    partner_name = fields.Char(related="partner_id.name", string="Partner name", readonly=True, store=True)
     # in the next line, ondelete defines what happens if I delete a SO linked to a loan, I could set it
     # as cascade if I wanted the loan to disappear if the sales order is deleted.
     sale_order_id = fields.Many2one('sale.order', string='Related Sale Order', ondelete="set null")
