@@ -8,7 +8,7 @@ class LoanApplication(models.Model):
     _order = 'date_application desc'
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(compute="_compute_display_name", tracking="always")
+    name = fields.Char(compute="_compute_display_name", tracking=1)
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
@@ -26,7 +26,7 @@ class LoanApplication(models.Model):
         ('signed', 'Signed'),
         ('rejected', 'Rejected'),
         ('cancel', 'Canceled'),
-    ], string="Status", default='draft', tracking="always", copy=False)
+    ], string="Status", default='draft', tracking=1, copy=False)
     notes = fields.Html(string="Notes", copy=False)
     document_ids = fields.One2many('loan.application.document', 'application_id', string='Documents')
     tag_ids = fields.Many2many('loan.application.tag', string='Tags')
@@ -123,18 +123,6 @@ class LoanApplication(models.Model):
             'date_rejection': date.today()
         })
         self.message_post(body="Loan application has been rejected.", subtype_xmlid="mail.mt_comment")
-
-    # @api.depends("partner_id", "product_id")
-    # def _compute_display_name(self):
-    #     """Override Odoo's _compute_display_name to assign custom display names."""
-    #     super(LoanApplication, self)._compute_display_name()  # Call base method
-
-    #     for application in self:
-    #         # If there's a sales order, use its partner and product name
-    #         if application.partner_id and application.product_id:
-    #             application.display_name = f"{application.partner_id.name} - {application.product_id.name}"
-    #         else:
-    #             application.display_name = self._assign_default_name(application)
 
     @api.depends("partner_id", "product_id", "sale_order_id.order_line.product_id")
     def _compute_display_name(self):

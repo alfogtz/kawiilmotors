@@ -113,7 +113,7 @@
 
                         <page string="Customer Signature">
                             <field name="customer_signature" widget="signature" string="Customer Signature"
-                            readonly="state != 'approved'"/>
+                            readonly="state not in ('approved', 'rejected', 'signed')/>
                         </page>
                     </notebook>
                     <group invisible="state not in ('rejected')">
