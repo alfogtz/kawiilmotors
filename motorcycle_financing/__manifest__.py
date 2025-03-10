@@ -20,7 +20,6 @@
              'views/motorcycle_financing_menu.xml',
              'views/sale_order_views.xml',
              'views/res_partner_view.xml'],
-#   'demo': ['data/loan_demo.xml',],
     'application': True,
     'images': ['static/description/icon.png'],
 }
