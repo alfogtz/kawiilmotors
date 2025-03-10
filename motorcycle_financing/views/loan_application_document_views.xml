@@ -17,12 +17,14 @@
                 <button name="action_approve_document" type="object"
                     class="oe_secondary"
                     icon="fa-check"
+                    title="Document Approved"
                     invisible="state != 'new'"/>
 
                 <!-- Reject Button -->
                 <button name="action_reject_document" type="object"
                     class="oe_secondary"
                     icon="fa-times"
+                    title="Document Rejected"
                     invisible="state != 'new'"/>
             </list>
         </field>
@@ -37,11 +39,13 @@
                     <button name="action_approve_document" type="object"
                         string="Approve" class="oe_highlight"
                         icon="fa-check"
+                        title="Document Approved"
                         invisible="state != 'new'"/>
 
                     <button name="action_reject_document" type="object"
                         string="Reject" class="oe_secondary"
                         icon="fa-times"
+                        title="Document Rejected"
                         invisible="state != 'new'"/>
                 </header>
 

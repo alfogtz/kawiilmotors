@@ -8,7 +8,8 @@
                 <button name="action_view_loan_applications"
                         type="object"
                         class="oe_stat_button"
-                        icon="fa-credit-card">
+                        icon="fa-credit-card"
+                        invisible="application_count == 0">
                     <field name="application_count" widget="statinfo" string="Loans"/>
                 </button>
             </div>

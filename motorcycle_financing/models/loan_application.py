@@ -8,7 +8,7 @@ class LoanApplication(models.Model):
     _order = 'date_application desc'
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(compute="_compute_display_name", track_visibility="always")
+    name = fields.Char(compute="_compute_display_name", tracking="always")
     currency_id = fields.Many2one('res.currency', related="sale_order_id.currency_id", readonly=True, store=True)
     date_application = fields.Date(string="Application Date", readonly=True, copy=False)
     date_approval = fields.Date(string="Approval Date", readonly=True, copy=False)
@@ -22,12 +22,11 @@ class LoanApplication(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('sent', 'Sent'),
-        # ('review', 'Credit Check'),
         ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
         ('signed', 'Signed'),
+        ('rejected', 'Rejected'),
         ('cancel', 'Canceled'),
-    ], string="Status", default='draft', track_visibility="always", copy=False)
+    ], string="Status", default='draft', tracking="always", copy=False)
     notes = fields.Html(string="Notes", copy=False)
     document_ids = fields.One2many('loan.application.document', 'application_id', string='Documents')
     tag_ids = fields.Many2many('loan.application.tag', string='Tags')
@@ -39,6 +38,7 @@ class LoanApplication(models.Model):
     user_id = fields.Many2one(related="sale_order_id.user_id", readonly=True, store=True)
     product_id = fields.Many2one('product.template', string='Motorcycle')
     sale_order_total = fields.Monetary(related="sale_order_id.amount_total", readonly=True, store=True)
+    customer_signature = fields.Binary(string="Customer Signature")
 
     _sql_constraints = [
         ('check_down_payment', 'CHECK(down_payment >= 0)', 'Down payment cannot be negative.'),
@@ -181,3 +181,8 @@ class LoanApplication(models.Model):
                     self.env['loan.application.document'].create(documents_to_create)
 
         return applications
+
+    @api.onchange('customer_signature')
+    def _onchange_customer_signature(self):
+        if self.customer_signature and self.state != 'signed':
+            self.state = 'signed'
