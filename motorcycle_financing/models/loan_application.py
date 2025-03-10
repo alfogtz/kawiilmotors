@@ -104,16 +104,6 @@ class LoanApplication(models.Model):
         })
         self.message_post(body="Loan application has been approved.", subtype_xmlid="mail.mt_comment")
 
-    # Loan rejection
-    # def action_reject_loan(self, rejection_reason=False):
-    #     if not rejection_reason:
-    #         raise exceptions.ValidationError("Please provide a reason for rejection.")
-    #
-    #     self.write({
-    #         'state': 'rejected',
-    #         'date_rejection': date.today(),
-    #         'rejection_reason': rejection_reason
-    #     })
 
     # Loan rejection without requiring a reason
     def action_reject_loan(self):
